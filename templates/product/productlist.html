@@ -1,0 +1,66 @@
+{% load static %}
+{% include 'dashboard/head.html' %}
+
+<body>
+
+    {% include 'dashboard/sidebar.html' %}
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+        {% include 'dashboard/navbar.html' %}
+            <!-- Navbar End -->
+
+
+            <!-- Sale & Revenue Start -->
+            <form method='POST' enctype='multipart/form-data'>
+                {% csrf_token %}
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-10">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Basic Table</h6>
+                            <table class="table">
+                                {% if product %}
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Owner</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Action</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in product %}
+                                    <tr>
+                                        <th scope="row">{{data.id}}</th>
+                                        <td><img src ='{% get_media_prefix %}{{data.image}}'width="60px" height="60px"></td>
+                                        <td>{{data.owner}}</td>
+                                        <td>{{data.price}}</td>
+                                        <td><a href="{% url 'product:productupdate' data.pk %}"><input type="button" class='btn btn-warning m-2' value='Edit'></a>
+                                        <a href="{% url 'product:productdelete' data.pk %}"><input type='button' class='btn btn-danger m-2' value='delete'></td>
+
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                                {% endfor %}
+                                {% endif %}
+                            </table>
+                        </div>
+                    </div>
+             
+                    
+                    
+                  
+                </div>
+            </div>
+        </form>
+            <!-- Table End -->
+
+
+            <!-- Footer Start -->
+            {% include 'dashboard/footer.html' %}

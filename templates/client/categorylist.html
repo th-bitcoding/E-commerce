@@ -1,0 +1,63 @@
+{% load static %}
+{% include 'dashboard/head.html' %}
+
+<body>
+
+    {% include 'dashboard/sidebar.html' %}
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+        {% include 'dashboard/navbar.html' %}
+            <!-- Navbar End -->
+
+
+            <!-- Sale & Revenue Start -->
+            <form method='POST'>
+                {% csrf_token %}
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-10">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Basic Table</h6>
+                            <table class="table">
+                                {% if category %}
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Action</th>
+                                       
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in category %}
+                                    <tr>
+                                        <th scope="row">{{data.id}}</th>
+                                        <td>{{data.category}}</td>
+                                        <td><button class='btn btn-warning m-2'>Edit</button>
+                                        <button class='btn btn-danger m-2'>Delete</button></td>
+
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                                {% endfor %}
+                                {% endif %}
+                            </table>
+                        </div>
+                    </div>
+             
+                    
+                    
+                  
+                </div>
+            </div>
+        </form>
+            <!-- Table End -->
+
+
+            <!-- Footer Start -->
+            {% include 'dashboard/footer.html' %}

@@ -1,0 +1,65 @@
+{% load static %}
+{% include 'dashboard/head.html' %}
+{% load crispy_forms_tags %}
+<body>
+
+    {% include 'dashboard/sidebar.html' %}
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+        {% include 'dashboard/navbar.html' %}
+            <!-- Navbar End -->
+
+
+            <!-- Sale & Revenue Start -->
+            <form method ='POST' enctype="multipart/form-data">
+                 {% csrf_token %}
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-8">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Basic Form</h6>
+                            <form>
+                                
+                                <div class="mb-3">
+                                    {{ form.first_name | as_crispy_field}}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.email | as_crispy_field}}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.address | as_crispy_field}}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.gender | as_crispy_field}}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.DOB }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.phone_number | as_crispy_field}}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form.image | as_crispy_field}}
+                                </div>
+                                <input type="submit" value ='submit' class="btn btn-primary">
+                            </form>
+                        </div>
+                    </div>
+                    
+                    
+                   
+                   
+                    
+                   
+                </div>
+            </div>
+        </form>
+            <!-- Form End -->
+
+
+            <!-- Footer Start -->
+{% include 'dashboard/footer.html' %}
+ 
