@@ -9,7 +9,7 @@ class Products(MyModel):
     image = models.ImageField(upload_to='products/')
     description = models.TextField()
     quantity = models.IntegerField()
-    price = models.FloatField()
+    price = models.IntegerField()
 
     def __str__(self):
-        return self.product_name
+        return self.owner.username

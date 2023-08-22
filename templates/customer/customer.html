@@ -162,17 +162,19 @@
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img src="{% get_media_prefix %}{{data.image}}" height="500" width="500" alt="">
+                        <img src="{% get_media_prefix %}{{data.image}}" height="300" width="300" alt="">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">{{data.product_name}}</h6>
+                        <h6 class="text-truncate mb-3" id="namepr{{data.id}}">{{data.product_name}}</h6>
                         <div class="d-flex justify-content-center">
                             <h6>{{data.price}}</h6><h6 class="text-muted ml-2"><del>{{data.price}}</del></h6>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between bg-light border">
                         <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                        <span id="divpr{{data.id}}" class="divpr">
+                            <button id="{{data.id}}" class="btn btn-sm text-dark p-0 cart"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</button>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -388,7 +390,108 @@
         </div>
     </div>
     <!-- Vendor End -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        console.log('working');
+        var cart = {};
+    
+        // Load cart from localStorage and update cart count on page load
+        if (localStorage.getItem('cart') !== null) {
+            cart = JSON.parse(localStorage.getItem('cart'));
+            document.getElementById('cart').innerHTML = 'Cart : ' + Object.keys(cart).length;
+        }
+    
+        // Function to update cart item displays
+        function updateCart(cart) {
+            console.log(cart);
+            for (var item in cart) {
+                var itemElementId = 'divpr' + item; // Updated ID for item div
+    
+                var itemHTML =
+                    "<button id='minus" + item + "' class='btn btn-primary minus'>-</button>" +
+                    "<span id='val" + item + "'>" + cart[item] + "</span>" +
+                    "<button id='plus" + item + "' class='btn btn-primary plus'> + </button>";
+    
+                document.getElementById(itemElementId).innerHTML = itemHTML;
+                updatePopover(cart);
+            }
+        }
+    
+        // Attach click event handler to .cart elements
+        $('.cart').click(function() {
+            var idstr = this.id.toString();
+    
+            if (cart[idstr] !== undefined) {
+                cart[idstr] = cart[idstr] + 1;
+            } else {
+                cart[idstr] = 1;
+            }
+    
+            // Update cart displays
+            updateCart(cart);
+    
+            localStorage.setItem('cart', JSON.stringify(cart));
+    
+            // Update cart count on the page
+            document.getElementById('cart').innerHTML = 'Cart : ' + Object.keys(cart).length;
+    
+            // Update popover content
+            updatePopover(cart);
+        });
+    
+        // Click event handler for popcart
+        $('#popcart').click(function() {
+            // Update popover content and show the popover
+            updatePopover(cart);
+            $('#popcart').popover('show');
+    
+            // Update cart count and display it
+            document.getElementById('cart').innerHTML = 'Cart : ' + Object.keys(cart).length;
+        });
+    
+        // Function to update the popover content
+        updatePopover(cart);
+        function updatePopover(cart) {
+            var popStr = "<h5>Check items</h5>";
+            var popStr1 ="<button>Check items</button>";
 
+            var i = 1;
+
+            for (var item in cart) {
+                console.log('item', item);
+                var productName = document.getElementById('namepr' + item).textContent;
+                popStr += "<b>" + i + "</b>";
+                popStr += productName + " Qty: " + cart[item] + '<br>';
+                console.log('***',popStr)
+
+                i = i + 1;
+            }
+            popStr += "<a href='#'><button class='btn btn-primary'>Check</button></a>";
+            document.getElementById('popcart').setAttribute('data-original-title', popStr);
+            
+        }
+            
+            
+
+
+        // Initial call to update cart displays
+        updateCart(cart);
+    
+        // Event delegation for minus and plus buttons within .divpr
+        $('.divpr').on("click", "button.minus", function() {
+            var a = this.id.slice(5);
+            cart[+a] = Math.max(0, cart[+a] - 1);
+            document.getElementById('val' + a).innerHTML = cart[+a];
+            updateCart(cart);
+        });
+        $('.divpr').on("click", "button.plus", function() {
+            var a = this.id.slice(4);
+            cart[+a] = cart[+a] + 1;
+            document.getElementById('val' + a).innerHTML = cart[+a];
+            updateCart(cart);
+        });
+    </script>
+    
 
     <!-- Footer Start -->
 {% include 'customer/footer.html' %}

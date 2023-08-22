@@ -156,3 +156,6 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/client/'
 
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+RAZOR_KEY_ID = 'rzp_test_bQZct68jPDjAyt'
+RAZOR_KEY_SECRET = 'QV6tSc0G5IeWjpTHIyVkdw8U'
